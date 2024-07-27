@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boogle - Juego de Palabras</title>
+</head>
+
+<body>
+  <header>
+    <h1>Boogle</h1>
+    <button id="mostrar-ranking">Ver Ranking</button>
+  </header>
+
+  <main>
+    <section id="juego" class="seccion oculto">
+      <div id="informacion-juego">
+        <p>Jugador: <span id="nombre-jugador-display"></span></p>
+        <p>Puntuación: <span id="puntuacion">0</span></p>
+        <p>Tiempo restante: <span id="temporizador">03:00</span></p>
+      </div>
+
+      <div id="tablero">
+      </div>
+
+      <div id="controles-juego">
+        <p>Palabra actual: <span id="palabra-actual"></span></p>
+        <button id="enviar-palabra">Enviar Palabra</button>
+      </div>
+
+      <div id="palabras-encontradas">
+        <h3>Palabras Encontradas</h3>
+        <ul id="lista-palabras"></ul>
+      </div>
+
+      <div id="palabras-incorrectas">
+        <h3>Palabras Incorrectas</h3>
+        <ul id="lista-palabras-incorrectas"></ul>
+      </div>
+    </section>
+
+    <section id="fin-juego" class="seccion oculto">
+      <h2>Fin del Juego</h2>
+      <p>Puntuación final: <span id="puntuacion-final"></span></p>
+      <button id="nueva-partida">Nueva Partida</button>
+    </section>
+  </main>
+
+  <footer>
+    <nav>
+      <ul>
+        <li><a href="https://github.com/Kildall/daw-boggle" target="_blank" rel="noopener noreferrer">Código en
+            GitHub</a></li>
+      </ul>
+    </nav>
+  </footer>
+
+</body>
+
+</html>
