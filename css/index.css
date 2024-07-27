@@ -1,0 +1,289 @@
+main {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* Secciones principales */
+.seccion {
+  padding: 0 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Formularios */
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+label {
+  margin-bottom: 0.5rem;
+}
+
+input[type="text"] {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Tablero de juego */
+#tablero {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.casilla {
+  background-color: #f0f0f0;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.casilla:hover {
+  background-color: #e0e0e0;
+}
+
+.casilla.seleccionada {
+  background-color: #4caf50;
+  color: white;
+  border-color: #45a049;
+}
+
+.casilla.ultima-seleccionada {
+  border-color: #45a049;
+}
+
+.casilla.disponible {
+  border-color: #4caf50;
+}
+
+.casilla.deshabilitada {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.penalizacion {
+  color: red;
+  font-weight: bold;
+  margin-left: 5px;
+  animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Información del juego */
+#informacion-juego {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+/* Controles del juego */
+#controles-juego {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+#palabra-actual {
+  font-size: 18px;
+  margin-right: 1rem;
+}
+
+/* Lista de palabras encontradas */
+#palabras-encontradas {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+#lista-palabras {
+  list-style-type: none;
+  padding: 0;
+}
+
+#lista-palabras li {
+  background-color: #f0f0f0;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  border-radius: 3px;
+}
+
+#palabras-incorrectas {
+  max-width: 300px;
+  margin: 50px auto;
+}
+
+#lista-palabras-incorrectas {
+  list-style-type: none;
+  padding: 0;
+}
+
+#lista-palabras-incorrectas li {
+  background-color: #ffcccc;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  border-radius: 3px;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-contenido {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+}
+
+/* Clases de utilidad */
+.oculto {
+  display: none;
+}
+
+/* Responsividad */
+@media (max-width: 600px) {
+  #tablero {
+    max-width: 300px;
+  }
+
+  .casilla {
+    font-size: 18px;
+  }
+
+  #informacion-juego {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Estilos para el selector de tiempo */
+#selector-tiempo {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Estilos para el botón de mostrar ranking */
+#mostrar-ranking {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#mostrar-ranking:hover {
+  background-color: #222;
+}
+
+/* Estilos para el modal de ranking */
+#modal-ranking .modal-contenido {
+  max-width: 800px;
+  width: 90%;
+}
+
+#orden-ranking {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#tabla-ranking {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#tabla-ranking th,
+#tabla-ranking td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#tabla-ranking th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+#tabla-ranking tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#tabla-ranking tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Estilos para el botón de cerrar en el modal */
+.cerrar {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cerrar:hover,
+.cerrar:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 600px) {
+  #modal-ranking .modal-contenido {
+    width: 85%;
+  }
+
+  #tabla-ranking {
+    font-size: 0.8em;
+  }
+}
