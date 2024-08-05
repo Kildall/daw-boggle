@@ -43,3 +43,28 @@ var palabrasEncontradas = [];
 var letrasSeleccionadas = [];
 var palabrasIncorrectas = [];
 
+// Elementos del DOM
+var seccionInicio = document.getElementById("inicio-juego");
+var seccionJuego = document.getElementById("juego");
+var seccionFinJuego = document.getElementById("fin-juego");
+var formNombreJugador = document.getElementById("form-nombre-jugador");
+var inputNombreJugador = document.getElementById("nombre-jugador");
+var spanNombreJugador = document.getElementById("nombre-jugador-display");
+var spanPuntuacion = document.getElementById("puntuacion");
+var spanTemporizador = document.getElementById("temporizador");
+var divTablero = document.getElementById("tablero");
+var spanPalabraActual = document.getElementById("palabra-actual");
+var btnEnviarPalabra = document.getElementById("enviar-palabra");
+var listapalabras = document.getElementById("lista-palabras");
+var spanPuntuacionFinal = document.getElementById("puntuacion-final");
+var btnNuevaPartida = document.getElementById("nueva-partida");
+var modal = document.getElementById("modal");
+var modalTitulo = document.getElementById("modal-titulo");
+var modalMensaje = document.getElementById("modal-mensaje");
+var btnCerrarModal = document.getElementById("modal-cerrar");
+var listaPalabrasIncorrectas = document.getElementById(
+  "lista-palabras-incorrectas"
+);
+var btnMostrarModalRanking = document.getElementById("mostrar-ranking");
+var btnCerrarModalRanking = document.querySelector("#modal-ranking .cerrar");
+var btnOrdenarRanking = document.getElementById("orden-ranking");
