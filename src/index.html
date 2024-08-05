@@ -72,6 +72,35 @@
       </ul>
     </nav>
   </footer>
+
+  <div id="modal" class="modal oculto">
+    <div class="modal-contenido">
+      <h3 id="modal-titulo"></h3>
+      <p id="modal-mensaje"></p>
+      <button id="modal-cerrar">Cerrar</button>
+    </div>
+  </div>
+  
+  <div id="modal-ranking" class="modal">
+    <div class="modal-contenido">
+      <span class="cerrar">&times;</span>
+      <h2>Ranking de Partidas</h2>
+      <select id="orden-ranking">
+        <option value="puntuacion">Ordenar por Puntaje</option>
+        <option value="fecha">Ordenar por Fecha</option>
+      </select>
+      <table id="tabla-ranking">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Puntaje</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
   <script src="js/index.js"></script>
 </body>
 
