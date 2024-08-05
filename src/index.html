@@ -17,6 +17,20 @@
   </header>
 
   <main>
+    <section id="inicio-juego" class="seccion">
+      <h2>Bienvenido a Boogle</h2>
+      <form id="form-nombre-jugador">
+        <label for="nombre-jugador">Nombre del jugador:</label>
+        <input type="text" id="nombre-jugador" name="nombre-jugador" minlength="3" required>
+        <select id="selector-tiempo">
+          <option value="60">1 minuto</option>
+          <option value="120">2 minutos</option>
+          <option value="180" selected>3 minutos</option>
+        </select>
+        <button type="submit">Comenzar Juego</button>
+      </form>
+    </section>
+
     <section id="juego" class="seccion oculto">
       <div id="informacion-juego">
         <p>Jugador: <span id="nombre-jugador-display"></span></p>
@@ -58,7 +72,7 @@
       </ul>
     </nav>
   </footer>
-
+  <script src="js/index.js"></script>
 </body>
 
 </html>
