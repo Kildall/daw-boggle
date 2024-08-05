@@ -79,3 +79,16 @@ function iniciarJuego() {
     btnCerrarModalRanking.addEventListener("click", cerrarModalRanking);
     btnOrdenarRanking.addEventListener("change", actualizarTablaRanking);
 }
+
+function manejarInicioJuego(evento) {
+    evento.preventDefault();
+    nombreJugador = inputNombreJugador.value.trim();
+    if (nombreJugador.length < 3) {
+        mostrarModal("Error", "El nombre debe tener al menos 3 caracteres.");
+        return;
+    }
+    spanNombreJugador.textContent = nombreJugador;
+    seccionInicio.classList.add("oculto");
+    seccionJuego.classList.remove("oculto");
+    iniciarPartida();
+}
