@@ -28,3 +28,5 @@ El proyecto esta escrito en JavaScript con ECMA 5 con CSS3 y deployeado en Githu
 
 - Bustos Pedro.
 - Pignatelli Franco.
+
+Link a GitHub Pages: https://kildall.github.io/daw-boggle/
