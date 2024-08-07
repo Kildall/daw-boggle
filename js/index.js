@@ -1,7 +1,36 @@
 "use strict";
 
-// Constants and global variables (unchanged)
-var distribucionLetras = { /* ... */ };
+// Constantes y variables globales
+//Probabilidad de aparicion de letras para el ingles
+var distribucionLetras = {
+    A: 8.34,
+    B: 1.54,
+    C: 2.73,
+    D: 4.14,
+    E: 12.60,
+    F: 2.03,
+    G: 1.92,
+    H: 6.11,
+    I: 6.71,
+    J: 0.23,
+    K: 0.87,
+    L: 4.24,
+    M: 2.53,
+    N: 6.80,
+    O: 7.70,
+    P: 1.66,
+    Q: 0.09,
+    R: 5.68,
+    S: 6.11,
+    T: 9.37,
+    U: 2.85,
+    V: 1.06,
+    W: 2.34,
+    X: 0.20,
+    Y: 2.04,
+    Z: 0.06
+};
+
 var PENALIZACION_PALABRA_INCORRECTA = 1;
 var nombreJugador = "";
 var puntuacion = 0;
@@ -13,7 +42,7 @@ var palabrasEncontradas = [];
 var letrasSeleccionadas = [];
 var palabrasIncorrectas = [];
 
-// DOM elements (unchanged)
+// Elementos del DOM
 var seccionInicio = document.getElementById("inicio-juego");
 var seccionJuego = document.getElementById("juego");
 var seccionFinJuego = document.getElementById("fin-juego");
@@ -37,7 +66,7 @@ var btnMostrarModalRanking = document.getElementById("mostrar-ranking");
 var btnCerrarModalRanking = document.querySelector("#modal-ranking .cerrar");
 var btnOrdenarRanking = document.getElementById("orden-ranking");
 
-// Utility functions
+// Funciones de utilidad general
 function mostrarModal(titulo, mensaje) {
     modalTitulo.textContent = titulo;
     modalMensaje.textContent = mensaje;
@@ -86,7 +115,7 @@ function verificarEnDiccionario(palabra) {
         });
 }
 
-// Game logic functions
+// Funciones de logica del juego
 function obtenerCasillasAdyacentes(fila, columna) {
     var adyacentes = [];
     for (var i = Math.max(0, fila - 1); i <= Math.min(3, fila + 1); i++) {
@@ -318,6 +347,7 @@ function actualizarTemporizador() {
 
 function mostrarResumenPalabras() {
     var resumenElement = document.createElement("div");
+    resumenElement.className = "resumen-palabras";
     resumenElement.innerHTML =
         "<h3>Resumen de palabras</h3>" +
         "<p>Palabras correctas: " +
@@ -336,7 +366,6 @@ function mostrarResumenPalabras() {
 
     seccionFinJuego.appendChild(resumenElement);
 }
-
 function guardarResultado() {
     try {
         var resultados = JSON.parse(localStorage.getItem("boogleResultados")) || [];
@@ -358,7 +387,19 @@ function finalizarJuego() {
     clearInterval(intervaloTemporizador);
     seccionJuego.classList.add("oculto");
     seccionFinJuego.classList.remove("oculto");
-    spanPuntuacionFinal.textContent = puntuacion;
+    
+    seccionFinJuego.innerHTML = "";
+    
+    var puntuacionFinalElement = document.createElement("p");
+    puntuacionFinalElement.innerHTML = 'Puntuación final: <span id="puntuacion-final">' + puntuacion + '</span>';
+    seccionFinJuego.appendChild(puntuacionFinalElement);
+    
+    var nuevaPartidaButton = document.createElement("button");
+    nuevaPartidaButton.id = "nueva-partida";
+    nuevaPartidaButton.textContent = "Nueva Partida";
+    nuevaPartidaButton.addEventListener("click", reiniciarJuego);
+    seccionFinJuego.appendChild(nuevaPartidaButton);
+    
     mostrarResumenPalabras();
     guardarResultado();
 }
