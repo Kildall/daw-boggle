@@ -67,6 +67,7 @@ var btnMostrarModalRanking = document.getElementById("mostrar-ranking");
 var btnCerrarModalRanking = document.querySelector("#modal-ranking .cerrar");
 var btnOrdenarRanking = document.getElementById("orden-ranking");
 var divPalabrasEncontradas = document.getElementById("palabras-encontradas");
+var btnReiniciarPartida = document.getElementById("reiniciar-partida");
 
 // Funciones de utilidad general
 function mostrarModal(titulo, mensaje) {
@@ -128,6 +129,39 @@ function calcularPuntos(palabra) {
     if (longitud === 6) return 3;
     if (longitud === 7) return 5;
     return 11;
+}
+
+function confirmarReiniciarPartida() {
+    clearInterval(intervaloTemporizador);
+    
+    const modalConfirmacion = document.createElement('div');
+    modalConfirmacion.className = 'modal';
+    modalConfirmacion.style.display = 'block';
+    
+    const modalContenido = document.createElement('div');
+    modalContenido.className = 'modal-contenido';
+    
+    modalContenido.innerHTML = `
+        <h3>Confirmar Reinicio</h3>
+        <p>Estas seguro de que quieres reiniciar la partida? Perderás todo el progreso actual.</p>
+        <div class="modal-botones">
+            <button id="confirmar-reinicio">Reiniciar</button>
+            <button id="cancelar-reinicio">Continuar jugando</button>
+        </div>
+    `;
+    
+    modalConfirmacion.appendChild(modalContenido);
+    document.body.appendChild(modalConfirmacion);
+    
+    document.getElementById('confirmar-reinicio').addEventListener('click', function() {
+        document.body.removeChild(modalConfirmacion);
+        reiniciarPartidaActual();
+    });
+    
+    document.getElementById('cancelar-reinicio').addEventListener('click', function() {
+        document.body.removeChild(modalConfirmacion);
+        iniciarTemporizador();
+    });
 }
 
 function verificarEnDiccionario(palabra) {
@@ -445,6 +479,10 @@ function limpiarListaPalabrasIncorrectas() {
     listaPalabrasIncorrectas.innerHTML = "";
 }
 
+function limpiarListaPalabrasCorrectas() {
+    listapalabras.innerHTML = "";
+}
+
 function iniciarPartida() {
     puntuacion = 0;
     tiempoRestante = parseInt(document.getElementById("selector-tiempo").value);
@@ -455,6 +493,7 @@ function iniciarPartida() {
     generarTablero();
     iniciarTemporizador();
     limpiarListaPalabrasIncorrectas();
+    limpiarListaPalabrasCorrectas();
 }
 
 function manejarInicioJuego(evento) {
@@ -474,7 +513,6 @@ function reiniciarJuego() {
     seccionFinJuego.classList.add("oculto");
     seccionInicio.classList.remove("oculto");
     inputNombreJugador.value = "";
-    listapalabras.innerHTML = "";
 }
 
 function actualizarTablaRanking() {
@@ -527,6 +565,22 @@ function cerrarModalRanking() {
     }
 }
 
+function reiniciarPartidaActual() {
+    clearInterval(intervaloTemporizador);
+    puntuacion = 0;
+    tiempoRestante = parseInt(document.getElementById("selector-tiempo").value);
+    palabrasEncontradas = [];
+    palabrasIncorrectas = [];
+    letrasSeleccionadas = [];
+    actualizarPuntuacion();
+    generarTablero();
+    iniciarTemporizador();
+    limpiarListaPalabrasIncorrectas();
+    limpiarListaPalabrasCorrectas();
+
+    mostrarMensajeJuego("Partida reiniciada", "info");
+}
+
 function iniciarJuego() {
     if (formNombreJugador) {
         formNombreJugador.addEventListener("submit", manejarInicioJuego);
@@ -568,6 +622,12 @@ function iniciarJuego() {
         btnOrdenarRanking.addEventListener("change", actualizarTablaRanking);
     } else {
         console.error("Elemento orden-ranking no encontrado");
+    }
+
+    if (btnReiniciarPartida) {
+        btnReiniciarPartida.addEventListener("click", confirmarReiniciarPartida);
+    } else {
+        console.error("Elemento reiniciar-partida no encontrado");
     }
 }
 

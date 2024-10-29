@@ -104,7 +104,6 @@ button:hover {
 #informacion-juego {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1rem;
 }
 
 /* Controles del juego */
@@ -155,6 +154,19 @@ button:hover {
   border-radius: 3px;
 }
 
+#reiniciar-partida {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  max-height: min-content;
+}
+
+#acciones-juego {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
 /* Modal */
 .modal {
   display: none;
@@ -175,6 +187,38 @@ button:hover {
   border: 1px solid #888;
   width: 80%;
   max-width: 500px;
+}
+
+.modal-botones {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.modal-botones button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#confirmar-reinicio {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+#confirmar-reinicio:hover {
+  background-color: #c82333;
+}
+
+#cancelar-reinicio {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+}
+
+#cancelar-reinicio:hover {
+  background-color: #5a6268;
 }
 
 /* Clases de utilidad */
