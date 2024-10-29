@@ -68,6 +68,8 @@ var btnCerrarModalRanking = document.querySelector("#modal-ranking .cerrar");
 var btnOrdenarRanking = document.getElementById("orden-ranking");
 var divPalabrasEncontradas = document.getElementById("palabras-encontradas");
 var btnReiniciarPartida = document.getElementById("reiniciar-partida");
+var btnComenzar = document.getElementById("btn-comenzar");
+var nombreError = document.getElementById("nombre-error");
 
 // Funciones de utilidad general
 function mostrarModal(titulo, mensaje) {
@@ -162,6 +164,23 @@ function confirmarReiniciarPartida() {
         document.body.removeChild(modalConfirmacion);
         iniciarTemporizador();
     });
+}
+
+function validarNombreJugador() {
+    const nombre = inputNombreJugador.value.trim();
+    const esValido = nombre.length >= 3;
+    
+    if (!esValido) {
+        inputNombreJugador.classList.add('invalido');
+        nombreError.textContent = "El nombre debe tener al menos 3 caracteres";
+    } else {
+        inputNombreJugador.classList.remove('invalido');
+        nombreError.textContent = "";
+    }
+    
+    if (btnComenzar) {
+        btnComenzar.disabled = !esValido;
+    }
 }
 
 function verificarEnDiccionario(palabra) {
@@ -499,10 +518,6 @@ function iniciarPartida() {
 function manejarInicioJuego(evento) {
     evento.preventDefault();
     nombreJugador = inputNombreJugador.value.trim();
-    if (nombreJugador.length < 3) {
-        mostrarModal("Error", "El nombre debe tener al menos 3 caracteres.");
-        return;
-    }
     spanNombreJugador.textContent = nombreJugador;
     seccionInicio.classList.add("oculto");
     seccionJuego.classList.remove("oculto");
@@ -584,10 +599,11 @@ function reiniciarPartidaActual() {
 function iniciarJuego() {
     if (formNombreJugador) {
         formNombreJugador.addEventListener("submit", manejarInicioJuego);
+        inputNombreJugador.addEventListener("input", validarNombreJugador);
+        btnComenzar.disabled = true;
     } else {
         console.error("Elemento form-nombre-jugador no encontrado");
     }
-
     if (btnEnviarPalabra) {
         btnEnviarPalabra.addEventListener("click", verificarPalabra);
     } else {
