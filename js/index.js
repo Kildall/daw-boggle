@@ -41,6 +41,7 @@ var palabraActual = "";
 var palabrasEncontradas = [];
 var letrasSeleccionadas = [];
 var palabrasIncorrectas = [];
+var mensajeTimeout = null;
 
 // Elementos del DOM
 var seccionInicio = document.getElementById("inicio-juego");
@@ -65,12 +66,36 @@ var listaPalabrasIncorrectas = document.getElementById("lista-palabras-incorrect
 var btnMostrarModalRanking = document.getElementById("mostrar-ranking");
 var btnCerrarModalRanking = document.querySelector("#modal-ranking .cerrar");
 var btnOrdenarRanking = document.getElementById("orden-ranking");
+var divPalabrasEncontradas = document.getElementById("palabras-encontradas");
 
 // Funciones de utilidad general
 function mostrarModal(titulo, mensaje) {
     modalTitulo.textContent = titulo;
     modalMensaje.textContent = mensaje;
     modal.style.display = "block";
+}
+
+function mostrarMensajeJuego(mensaje, tipo = 'info', duracion = 3000) {
+    if (mensajeTimeout) {
+        clearTimeout(mensajeTimeout);
+        const oldMessage = document.querySelector('.mensaje-juego');
+        if (oldMessage) {
+            oldMessage.remove();
+        }
+    }
+    
+    const mensajeElement = document.createElement('div');
+    mensajeElement.className = `mensaje-juego ${tipo}`;
+    mensajeElement.textContent = mensaje;
+    
+    divPalabrasEncontradas.parentNode.insertBefore(mensajeElement, divPalabrasEncontradas);
+
+    mensajeTimeout = setTimeout(() => {
+        const message = document.querySelector('.mensaje-juego');
+        if (message) {
+            message.remove();
+        }
+    }, duracion);
 }
 
 function cerrarModal() {
@@ -260,7 +285,8 @@ function penalizarPalabraIncorrecta() {
     } else {
         mensaje += "No has perdido puntos porque tu puntuación ya era 0.";
     }
-    mostrarModal("Palabra inválida", mensaje);
+    mostrarMensajeJuego(mensaje, 'error');
+    limpiarSeleccion();
 }
 
 function agregarPalabraALista(palabra, puntos) {
@@ -271,17 +297,17 @@ function agregarPalabraALista(palabra, puntos) {
 
 function verificarPalabra() {
     if (palabraActual.length < 3) {
-        mostrarModal("Palabra inválida", "La palabra debe tener al menos 3 letras.");
+        mostrarMensajeJuego("La palabra debe tener al menos 3 letras.", 'error');
         return;
     }
 
     if (palabrasEncontradas.indexOf(palabraActual) !== -1) {
-        mostrarModal("Palabra repetida", "Ya has encontrado esta palabra.");
+        mostrarMensajeJuego("Ya has encontrado esta palabra.", 'error');
         return;
     }
 
     if (palabrasIncorrectas.indexOf(palabraActual) !== -1) {
-        mostrarModal("Palabra inválida", "Ya has intentado esta palabra antes y no es válida.");
+        mostrarMensajeJuego("Ya has intentado esta palabra antes y no es válida.", 'error');
         limpiarSeleccion();
         return;
     }
@@ -294,7 +320,7 @@ function verificarPalabra() {
                 palabrasEncontradas.push(palabraActual);
                 actualizarPuntuacion();
                 agregarPalabraALista(palabraActual, puntosPalabra);
-                mostrarModal("¡Palabra válida!", "Has ganado " + puntosPalabra + " puntos.");
+                mostrarMensajeJuego("Palabra válida!", "success");
                 limpiarSeleccion();
             } else {
                 penalizarPalabraIncorrecta();
@@ -303,7 +329,7 @@ function verificarPalabra() {
         })
         .catch(function (error) {
             console.error("Error al verificar la palabra:", error);
-            mostrarModal("Error", "Hubo un problema al verificar la palabra. Inténtalo de nuevo.");
+            mostrarMensajeJuego("Hubo un problema al verificar la palabra. Inténtalo de nuevo.", 'error');
         });
 }
 
