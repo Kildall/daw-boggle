@@ -1,59 +1,150 @@
 "use strict";
 
-document.addEventListener("DOMContentLoaded", function () {
-  var formulario = document.getElementById("formulario-contacto");
-  formulario.addEventListener("submit", manejarEnvioFormulario);
-});
+var configuracionCampos = {
+  nombre: {
+    id: 'nombre',
+    errorId: 'nombre-error',
+    validacion: function (valor) {
+      return valor.length >= 3;
+    },
+    mensajeError: 'El nombre debe tener al menos 3 caracteres'
+  },
+  email: {
+    id: 'email',
+    errorId: 'email-error',
+    validacion: function (valor) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
+    },
+    mensajeError: 'Por favor, introduce un email válido'
+  },
+  mensaje: {
+    id: 'mensaje',
+    errorId: 'mensaje-error',
+    validacion: function (valor) {
+      return valor.length >= 5;
+    },
+    mensajeError: 'El mensaje debe tener al menos 5 caracteres'
+  }
+};
 
-function manejarEnvioFormulario(evento) {
-  evento.preventDefault();
+var manipularClase = {
+  agregar: function (elemento, clase) {
+    if (elemento.className.indexOf(clase) === -1) {
+      elemento.className += ' ' + clase;
+    }
+  },
+  remover: function (elemento, clase) {
+    elemento.className = elemento.className.replace(new RegExp('(?:^|\\s)' + clase + '(?!\\S)'), '');
+  }
+};
 
-  var nombre = document.getElementById("nombre").value.trim();
-  var email = document.getElementById("email").value.trim();
-  var mensaje = document.getElementById("mensaje").value.trim();
+function crearElementosError() {
+  for (var campo in configuracionCampos) {
+    if (configuracionCampos.hasOwnProperty(campo)) {
+      var config = configuracionCampos[campo];
+      var elemento = document.getElementById(config.id);
+      var contenedor = elemento.parentNode;
 
-  if (validarFormulario(nombre, email, mensaje)) {
-    enviarFormulario(nombre, email, mensaje);
+      var mensajeError = document.createElement('span');
+      mensajeError.id = config.errorId;
+      mensajeError.className = 'mensaje-error';
+      contenedor.appendChild(mensajeError);
+    }
   }
 }
 
-function validarFormulario(nombre, email, mensaje) {
-  if (nombre.length < 2) {
-    alert("El nombre debe tener al menos 2 caracteres.");
+function validarCampo(campoId) {
+  var config = configuracionCampos[campoId];
+  var elemento = document.getElementById(config.id);
+  var valor = elemento.value.trim();
+  var contenedor = elemento.parentNode;
+  var mensajeError = document.getElementById(config.errorId);
+
+  manipularClase.remover(contenedor, 'error');
+  manipularClase.remover(contenedor, 'success');
+  mensajeError.textContent = '';
+
+  if (!config.validacion(valor)) {
+    manipularClase.agregar(contenedor, 'error');
+    mensajeError.textContent = config.mensajeError;
     return false;
   }
 
-  if (!validarEmail(email)) {
-    alert("Por favor, introducí una dirección de correo electrónico válida.");
-    return false;
-  }
-
-  if (mensaje.length < 5) {
-    alert("El mensaje debe tener al menos 5 caracteres.");
-    return false;
-  }
-
+  manipularClase.agregar(contenedor, 'success');
   return true;
 }
 
-function validarEmail(email) {
-  var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
+function mostrarNotificacion(mensaje, tipo) {
+  var notificacion = document.createElement('div');
+  notificacion.className = 'mensaje-notificacion ' + tipo;
+  notificacion.textContent = mensaje;
+  document.body.appendChild(notificacion);
+
+  setTimeout(function () {
+    if (notificacion.parentNode) {
+      notificacion.parentNode.removeChild(notificacion);
+    }
+  }, 3000);
 }
 
-function enviarFormulario(nombre, email, mensaje) {
-  var destinatario = "boggle@daw.com"; // Cambiar esto por dirección válida / (se deja una de ejemplo porque actualmente no tenemos una)
-  var asunto = "Contacto desde Boogle";
-  var cuerpoMensaje =
-    "Nombre: " + nombre + "\nEmail: " + email + "\n\nMensaje:\n" + mensaje;
+function enviarFormulario(formulario) {
+  var datosFormulario = {
+    nombre: document.getElementById('nombre').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    mensaje: document.getElementById('mensaje').value.trim()
+  };
 
-  var mailtoLink =
-    "mailto:" +
-    encodeURIComponent(destinatario) +
-    "?subject=" +
-    encodeURIComponent(asunto) +
-    "&body=" +
-    encodeURIComponent(cuerpoMensaje);
+  var mailtoLink = 'mailto:boggle@daw.com' +
+    '?subject=' + encodeURIComponent('Contacto desde Boogle') +
+    '&body=' + encodeURIComponent(
+      'Nombre: ' + datosFormulario.nombre + '\n' +
+      'Email: ' + datosFormulario.email + '\n\n' +
+      'Mensaje:\n' + datosFormulario.mensaje
+    );
 
   window.location.href = mailtoLink;
+  formulario.reset();
+
+  for (var campo in configuracionCampos) {
+    if (configuracionCampos.hasOwnProperty(campo)) {
+      var elemento = document.getElementById(configuracionCampos[campo].id);
+      var contenedor = elemento.parentNode;
+      manipularClase.remover(contenedor, 'success');
+    }
+  }
+
+  mostrarNotificacion('Mensaje enviado', 'exito');
 }
+
+function inicializarFormulario() {
+  var formulario = document.getElementById('formulario-contacto');
+
+  crearElementosError();
+
+  formulario.addEventListener('input', function (e) {
+    var campoId = e.target.id;
+    if (configuracionCampos.hasOwnProperty(campoId)) {
+      validarCampo(campoId);
+    }
+  });
+
+  formulario.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var todosValidos = true;
+    for (var campo in configuracionCampos) {
+      if (configuracionCampos.hasOwnProperty(campo)) {
+        if (!validarCampo(configuracionCampos[campo].id)) {
+          todosValidos = false;
+        }
+      }
+    }
+
+    if (todosValidos) {
+      enviarFormulario(formulario);
+    }
+  });
+}
+
+
+document.addEventListener('DOMContentLoaded', inicializarFormulario);
